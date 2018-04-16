@@ -40,6 +40,38 @@ class App
                 message: 'Welcome to AwesomePAPI!'
             });
         });
+
+        router.get('/getCreditCards', (req, res, next) =>
+        {
+            res.json([
+                                {
+                    text: 'American Express',
+                    name: 'Nessuna transazione',
+                    number: '3759 876543 21001',
+                    image: ''
+                },
+                {
+                    text: 'VISA',
+                    name: 'Ultimo utilizzo ieri alle 07.34',
+                    number: '4000 1234 5678 9010',
+                    image: ''
+                },
+                {
+                    text: 'Mastercard',
+                    name: 'Ci sono due nuove transazioni',
+                    number: '5412 7556 7890 0000',
+                    image: ''
+                },
+                {
+                    text: 'RedCard',
+                    name: 'Nessuna transazione',
+                    number: '4000 1234 5678 9010',
+                    image: ''
+                }
+            ]);
+        });
+
+
         this.express.use('/', router);
     }
 
