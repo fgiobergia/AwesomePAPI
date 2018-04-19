@@ -1,3 +1,9 @@
+/**
+ * Italia PagoPA Proxy
+ * Cittadinanza Digitale PagoPA services
+ *
+ *
+ */
 import * as http from 'http';
 import * as debug from 'debug';
 
