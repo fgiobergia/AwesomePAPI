@@ -4,10 +4,10 @@
  *
  */
 
-class CreditCard
-{
-    public readonly id: number;
-    public readonly brand: string;
-    public readonly lastUsage: string;
-    public readonly number: string;
+import { PaymentMethod } from './PaymentMethod';
+
+export interface CreditCard extends PaymentMethod {
+    issuer: string,
+    number: string,
+    message: string, // a message to visualize (e.g. last usage)
 }

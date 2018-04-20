@@ -4,8 +4,9 @@
  *
  */
 
-class PaymentMethod
-{
-    public readonly id?: number;
-    public readonly type?: string;
+export enum PaymentMethodType { CREDIT_CARD = "CREDIT_CARD" };
+
+export interface PaymentMethod {
+    readonly id: string;
+    readonly type: PaymentMethodType;
 }
