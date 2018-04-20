@@ -4,10 +4,10 @@
  *
  */
 
-import { PaymentMethod } from './PaymentMethod';
+import { IPaymentMethod } from './PaymentMethod';
 
-export interface CreditCard extends PaymentMethod {
-    issuer: string,
-    number: string,
-    message: string, // a message to visualize (e.g. last usage)
+export interface ICreditCard extends IPaymentMethod {
+    readonly issuer: string,
+    readonly number: string,
+    readonly message: string // a message to visualize (e.g. last usage)
 }

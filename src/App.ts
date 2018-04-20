@@ -8,11 +8,12 @@ import * as bodyParser from "body-parser";
 import * as express from "express";
 import * as logger from "morgan";
 import * as morgan from "morgan";
-import { UserController } from "./controllers/UserController";
-import { PaymentMethod } from './types/PaymentMethod';
-import { CreditCard } from "./types/CreditCard";
 
-const VERSION: string = "0.0.10";
+import { UserController } from "./controllers/UserController";
+import { ICreditCard } from "./types/CreditCard";
+import { IPaymentMethod } from './types/PaymentMethod';
+
+const VERSION: string = "0.0.11";
 
 class App
 {
@@ -37,12 +38,12 @@ class App
         this.express.use(bodyParser.urlencoded({ extended: false }));
     }
 
-    /* TODO improve andThen() typing */
-    private getUserAndThen(req: express.Request, res: express.Response, andThen: any): any {
+    /* find out if there's something similar to java's "Optional"s */
+    private getUserAndThen<T, S={}>(req: express.Request, res: express.Response, andThen: ((user: UserController, args: S|undefined) => T|undefined), args?: S): T|undefined {
         try {
             const token = req.query.token;
             const user = new UserController(token);
-            return andThen(user);
+            return andThen(user, args);
         }
         catch (err) {
             // TODO: define what status code to return
@@ -72,7 +73,8 @@ class App
         });
 
         router.get("/wallet", (req,res) => {
-            const wallet: ReadonlyArray<PaymentMethod> = this.getUserAndThen(req, res, (user: UserController) => user.getWallet());
+            const wallet: ReadonlyArray<IPaymentMethod>|undefined =
+                this.getUserAndThen<ReadonlyArray<IPaymentMethod>>(req, res, (user: UserController) => user.getWallet());
             if (wallet !== undefined) {
                 res.json({
                     "status": "OK",
@@ -82,7 +84,8 @@ class App
         });
 
         router.get("/cards", (req,res) => {
-            const cards: ReadonlyArray<CreditCard> = this.getUserAndThen(req,res,(user: UserController) => user.getCreditCards());
+            const cards: ReadonlyArray<ICreditCard>|undefined =
+                this.getUserAndThen<ReadonlyArray<ICreditCard>>(req,res,(user: UserController) => user.getCreditCards());
             if (cards !== undefined) {
                 res.json({
                     "status": "OK",
@@ -92,7 +95,8 @@ class App
         });
 
         router.get("/cards/:cardid", (req,res) => {
-            const card: CreditCard = this.getUserAndThen(req,res,(user: UserController) => user.getCreditCard(req.params.cardid));
+            const card: ICreditCard|undefined =
+                this.getUserAndThen<ICreditCard>(req,res,(user: UserController) => user.getCreditCard(req.params.cardid));
             if (card !== undefined) {
                 res.json({
                     "status": "OK",
@@ -100,9 +104,6 @@ class App
                 });
             }
         });
-
-        
-       
 
         this.express.use("/", router);
     }

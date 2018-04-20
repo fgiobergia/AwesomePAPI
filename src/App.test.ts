@@ -9,9 +9,8 @@ import * as express from "express";
 import * as http from "http";
 import * as request from "request";
 
+import { ICreditCard } from "./types/CreditCard";
 import { PaymentMethodType } from "./types/PaymentMethod";
-import { CreditCard } from "./types/CreditCard";
-
 
 import App from "./App";
 
@@ -29,6 +28,8 @@ beforeAll(() =>
 
 describe("App", () =>
 {
+    const contentTypeHeader = "content-type";
+
     test("should get welcome JSON", (done) =>
     {
         request(WS_URL + "/", (error, response, body) =>
@@ -36,10 +37,10 @@ describe("App", () =>
             expect(response).toBeTruthy();
             expect(response.statusCode).toBe(200);
             expect(error).toBe(null); // tslint:disable-line
-            expect(response.headers["content-type"]).toContain("json");
+            expect(response.headers[contentTypeHeader]).toContain("json");
             expect(JSON.parse(body)).toEqual({
                 "message": "Welcome to AwesomePAPI!",
-                "version": "0.0.10"
+                "version": "0.0.11"
             });
             done();
         });
@@ -49,12 +50,15 @@ describe("App", () =>
         request(WS_URL + "/wallet", (error, response, body) => {
             expect(response).toBeTruthy();
             expect(response.statusCode).toBe(200);
-            expect(error).toBe(null);
-            expect(response.headers["content-type"]).toContain("json");
+            expect(error).toBeNull();
+            expect(response.headers[contentTypeHeader]).toContain("json");
+            
             const obj = JSON.parse(body);
+            const walletProperty = "wallet";
+
             expect(obj).toHaveProperty("status", "OK");
-            expect(obj).toHaveProperty("wallet");
-            expect(obj["wallet"].length).toBeGreaterThan(1);
+            expect(obj).toHaveProperty(walletProperty);
+            expect(obj[walletProperty].length).toBeGreaterThan(1);
             done();
         });
     });
@@ -63,14 +67,17 @@ describe("App", () =>
         request(WS_URL + "/cards", (error, response, body) => {
             expect(response).toBeTruthy();
             expect(response.statusCode).toBe(200);
-            expect(error).toBe(null);
-            expect(response.headers["content-type"]).toContain("json");
+            expect(error).toBeNull();
+            expect(response.headers[contentTypeHeader]).toContain("json");
+            
             const obj = JSON.parse(body);
+            const ccListProperty = "credit_cards";
+
             expect(obj).toHaveProperty("status", "OK");
-            expect(obj).toHaveProperty("credit_cards");
-            expect(obj["credit_cards"].length).toBeGreaterThan(1);
-            const countCC = obj["credit_cards"].reduce((i: number, v: CreditCard) => v.type === PaymentMethodType.CREDIT_CARD ? i + 1 : i, 0);
-            expect(obj["credit_cards"].length).toBe(countCC);
+            expect(obj).toHaveProperty(ccListProperty);
+            expect(obj[ccListProperty].length).toBeGreaterThan(1);
+            const countCC = obj[ccListProperty].reduce((i: number, v: ICreditCard) => v.type === PaymentMethodType.CREDIT_CARD ? i + 1 : i, 0);
+            expect(obj[ccListProperty].length).toBe(countCC);
             done();
         });
     });
@@ -79,12 +86,13 @@ describe("App", () =>
         request(WS_URL + "/cards/3", (error, response, body) => {
             expect(response).toBeTruthy();
             expect(response.statusCode).toBe(200);
-            expect(error).toBe(null);
-            expect(response.headers["content-type"]).toContain("json");
+            expect(error).toBeNull();
+            expect(response.headers[contentTypeHeader]).toContain("json");
             const obj = JSON.parse(body);
+            const ccProperty = "credit_card";
             expect(obj).toHaveProperty("status", "OK");
-            expect(obj).toHaveProperty("credit_card");
-            expect(obj["credit_card"]).toEqual({
+            expect(obj).toHaveProperty(ccProperty);
+            expect(obj[ccProperty]).toEqual({
                 id: "3",
                 type: "CREDIT_CARD",
                 issuer: "Mastercard",

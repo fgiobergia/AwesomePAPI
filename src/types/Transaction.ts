@@ -4,14 +4,15 @@
  *
  */
 
- import { PaymentMethod } from './PaymentMethod';
-export interface Transaction {
-    method: PaymentMethod,
-    fee: number,
-    amount: number,
-    currency: string,
-    description: string,
-    date: string,
-    recipient: string,
-    isNew: boolean // TODO: figure out how to handle this
+import { IPaymentMethod } from './PaymentMethod';
+
+export interface ITransaction {
+    readonly method: IPaymentMethod,
+    readonly fee: number,
+    readonly amount: number,
+    readonly currency: string,
+    readonly description: string,
+    readonly date: string,
+    readonly recipient: string,
+    readonly isNew: boolean // TODO: figure out how to handle this
 }
