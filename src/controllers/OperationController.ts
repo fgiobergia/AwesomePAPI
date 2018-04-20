@@ -4,8 +4,8 @@
  *
  */
 
-import * as Mocked from '../MockedData';
-import {UserController} from './UserController';
+import * as Mocked from "../MockedData";
+import { UserController } from "./UserController";
 
 export class OperationController extends UserController
 {
@@ -14,12 +14,12 @@ export class OperationController extends UserController
         super(userId);
     }
 
-    getOperations(cardId: number): Array<Operation>
+    public getOperations(cardId: number): ReadonlyArray<Operation>
     {
-        return Mocked.operations.filter( operation => operation.cardId === cardId );
+        return Mocked.operations.filter(operation => operation.cardId === cardId);
     }
 
-    getLatestOperations(maxOperations: number): Array<Operation>
+    public getLatestOperations(maxOperations: number): ReadonlyArray<Operation>
     {
         return Mocked.operations.slice(1, maxOperations + 1);
     }

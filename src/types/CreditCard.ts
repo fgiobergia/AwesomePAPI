@@ -6,8 +6,8 @@
 
 class CreditCard
 {
-    id: number;
-    brand: string;
-    lastUsage: string;
-    number: string;
+    public readonly id: number;
+    public readonly brand: string;
+    public readonly lastUsage: string;
+    public readonly number: string;
 }

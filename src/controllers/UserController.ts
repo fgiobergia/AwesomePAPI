@@ -6,7 +6,8 @@
 
 export abstract class UserController
 {
-    protected userId: string;
+    protected readonly userId: string;
+
     protected constructor(userId: string)
     {
         this.userId = userId;

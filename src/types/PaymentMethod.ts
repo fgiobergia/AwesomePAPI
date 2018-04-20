@@ -6,6 +6,6 @@
 
 class PaymentMethod
 {
-    id: number;
-    type: string;
+    public readonly id?: number;
+    public readonly type?: string;
 }

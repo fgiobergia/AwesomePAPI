@@ -4,8 +4,8 @@
  *
  */
 
-import * as Mocked from '../MockedData';
-import {UserController} from './UserController';
+import * as Mocked from "../MockedData";
+import { UserController } from "./UserController";
 
 export class CreditCardController extends UserController
 {
@@ -14,14 +14,13 @@ export class CreditCardController extends UserController
         super(userId);
     }
 
-    getCreditCards(): Array<CreditCard>
+    public getCreditCards(): ReadonlyArray<CreditCard>
     {
         return Mocked.cards;
     }
 
-    getCreditCard(creditCardId: number): CreditCard
+    public getCreditCard(creditCardId: number): CreditCard | undefined
     {
-        return Mocked.cards.find( card => card.id === creditCardId);
+        return Mocked.cards.find(card => card.id === creditCardId);
     }
-
 }

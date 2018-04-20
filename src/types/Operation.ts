@@ -6,13 +6,13 @@
 
 class Operation
 {
-    cardId: number;
-    date: string;
-    time: string;
-    subject: string;
-    recipient: string;
-    amount: number;
-    currency: string;
-    transactionCost: number;
-    isNew: boolean
+    public readonly cardId: number;
+    public readonly date: string;
+    public readonly time: string;
+    public readonly subject: string;
+    public readonly recipient: string;
+    public readonly amount: number;
+    public readonly currency: string;
+    public readonly transactionCost: number;
+    public readonly isNew: boolean;
 }

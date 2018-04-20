@@ -4,7 +4,7 @@
  *
  */
 
-import {OperationController} from './OperationController';
+import { OperationController } from "./OperationController";
 
 describe("Operation controller", () =>
 {
